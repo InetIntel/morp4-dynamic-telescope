@@ -1,0 +1,8 @@
+*.d
+*.o
+*.log
+zlog-cfg-cur
+prefixes.txt
+*.bin
+bpdk-buffer/build/
+*.pcap
