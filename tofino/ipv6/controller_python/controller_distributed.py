@@ -167,7 +167,7 @@ class LocalClient:
             netws = list(ipnet.subnets(new_prefix=56))
             self.index_prefix_mapping.extend(netws)
 
-            base_idx += len(netws)
+            base_idx += mask + 1
             self.addr_cnt += len(netws)
 
     def add_mirroring(self, switch_ip, eg_ports, mc_session_id, log_session_id):

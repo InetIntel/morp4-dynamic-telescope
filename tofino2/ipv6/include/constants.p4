@@ -2,4 +2,4 @@
 #define GLOBAL_TABLE_INDEX_WIDTH 21
 #define DARK_TABLE_ENTRIES 16384 // 2^14 - /46 granularity
 #define DARK_TABLE_INDEX_WIDTH 14
-#define LOG_PORT 24
+#define LOG_PORT 16

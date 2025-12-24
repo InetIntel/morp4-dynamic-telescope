@@ -49,9 +49,9 @@ sys.path.append(SDE_PYTHON3)
 sys.path.append(os.path.join(SDE_PYTHON3, 'tofino'))
 sys.path.append(os.path.join(SDE_PYTHON3, 'tofino', 'bfrt_grpc'))
 
-LOG_PORT = 6
+LOG_PORT = 16
 # LOG_PORT = 140 # 2
-RECIRCULATE_PORT = 68
+RECIRCULATE_PORT = 6
 NUM_PIPES = 2
 
 import bfrt_grpc.client as gc
@@ -133,7 +133,7 @@ class LocalClient:
         self.dark_meters[switch_ip] = self.bfrt_infos[switch_ip].table_get('pipe.Ingress.dark_meter')
         self.dark_global_meters[switch_ip] = self.bfrt_infos[switch_ip].table_get('pipe.Ingress.dark_global_meter')
         self.interfaces[switch_ip].bind_pipeline_config(self.bfrt_infos[switch_ip].p4_name_get())
-        self.add_mirroring(switch_ip, [5, 5, 6], 1, 2)
+        self.add_mirroring(switch_ip, [14, 14, 15], 1, 2)
         monitored_prefixes = self.parse_monitored(self.monitored_path)
         self.populate_monitored(switch_ip, monitored_prefixes)
         self.add_ports(switch_ip, self.ports)
@@ -238,7 +238,7 @@ class LocalClient:
                 dark_netw = '.'.join(str(dark_netws[i]).split('.')[:3])
                 self.dark_prefix_index_mapping[dark_netw] = dark_base_idx + i
 
-            base_idx += len(netws) / 2
+            base_idx += int(len(netws) / 2)
             dark_base_idx += len(dark_netws)
             self.addr_cnt += len(netws)
 
@@ -310,7 +310,7 @@ class LocalClient:
             gc.DataTuple('$mcast_grp_a_valid', bool_val=True),
             gc.DataTuple('$mcast_grp_b', 2),
             gc.DataTuple('$mcast_grp_b_valid', bool_val=True),
-            gc.DataTuple('$max_pkt_len', 39)
+            gc.DataTuple('$max_pkt_len', 41)
         ], "$normal")
 
         try:
@@ -478,8 +478,8 @@ if __name__ == "__main__":
     parser.add_argument('--avg-packet-rate', default=343933, type=int, help='Avg packet rate')
     parser.add_argument('--alpha', default=216, type=int, help='Alpha value')
     parser.add_argument('--monitored', default='../input_files/monitored.txt', type=str)
-    parser.add_argument('--outgoing', nargs='*', default=[1], type=int)
-    parser.add_argument('--incoming', nargs='*', default=[2], type=int)
+    parser.add_argument('--outgoing', nargs='*', default=[8], type=int)
+    parser.add_argument('--incoming', nargs='*', default=[9], type=int)
     parser.add_argument('--switches', nargs='*', default=['localhost'], type=str, help='IP addresses of switches to monitor')
 
     args = parser.parse_args()

@@ -15,7 +15,7 @@ extern "C" {
 #endif
 
 #define SDE_INSTALL "/home/p4user/bf-sde-9.13.4/install"
-#define CONF_FILE_DIR "share/p4/targets/tofino"
+#define CONF_FILE_DIR "share/p4/targets/tofino2"
 #define CONF_FILE_PATH(prog) \
     SDE_INSTALL "/" CONF_FILE_DIR "/" prog ".conf"
 

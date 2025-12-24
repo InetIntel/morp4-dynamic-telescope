@@ -163,8 +163,8 @@ void LocalClient::populate_monitored(vector<string> entries){
         cout << "Prefix: " << prefix << " Length: " << length << endl;
         cout << "Mask " << mask << endl;
         base_idx += (uint64_t) mask + 1;
+        addr_cnt += (uint64_t) (mask + 1)*4;
     }
-    addr_cnt = base_idx;
 }
 
 void LocalClient::add_ports(unordered_map<string, vector<uint16_t>> ports){
@@ -262,6 +262,7 @@ void LocalClient::run(){
                     }
                     flag_indices.push_back(i);
                     counters[actual_idx] = alpha + 1;
+                    active_addr_cnt++;
                 }
                 else {
                     if(counters[actual_idx] > 1){
@@ -290,7 +291,7 @@ void LocalClient::run(){
         }
 
         cout << "Cur active addr: " << cur_active_addr_cnt << endl;
-        cout << "Active addr: " << active_addr_cnt << "out of" << addr_cnt << endl;
+        cout << "Active addr: " << active_addr_cnt << " out of " << addr_cnt << endl;
 
         auto final_stop = chrono::steady_clock::now();
         auto final_duration = chrono::duration_cast<chrono::microseconds>(final_stop - start);

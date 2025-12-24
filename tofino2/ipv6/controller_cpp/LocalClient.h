@@ -29,11 +29,12 @@
 #include "PortsTable.h"
 #include "PortManager.h"
 #include "Node.h"
+#include "Meter.h"
 #include "MulticastGroup.h"
 #include "MirrorManager.h"
 
 #define NUM_PIPES 2
-#define RECIRCULATE_PORT 68
+#define RECIRCULATE_PORT 6
 
 using namespace std;
 using namespace bfrt;
@@ -46,8 +47,8 @@ struct Args {
     uint32_t max_pkt_rate = 1174405;
     uint32_t avg_pkt_rate = 343933;
     string monitored_path = "monitored.txt";
-    vector<uint16_t> outgoing = {1};
-    vector<uint16_t> incoming = {2};
+    vector<uint16_t> outgoing = {8};
+    vector<uint16_t> incoming = {9};
 };
 
 class LocalClient{

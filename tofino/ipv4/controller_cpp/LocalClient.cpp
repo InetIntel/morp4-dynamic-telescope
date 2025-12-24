@@ -173,6 +173,8 @@ void LocalClient::set_rates(){
 }
 
 void LocalClient::update_rates(unordered_map<uint32_t, uint32_t> inactive_pfxs, uint32_t inactive_addr){
+    if (inactive_addr == 0)
+        return;
     uint32_t addr_avg_pkt_rate = ceil(avg_pkt_rate / (double) inactive_addr);
     uint32_t addr_max_pkt_rate = ceil(max_pkt_rate / (double) inactive_addr);
     uint32_t prefix_max_pkt_rate, prefix_avg_pkt_rate;
@@ -218,6 +220,9 @@ void LocalClient::setup(){
     global_table = new Register("pipe.Ingress.global_table", session, dev_tgt, bf_rt_info);
     flag_table = new Register("pipe.Ingress.flag_table", session, dev_tgt, bf_rt_info);
 
+    dark_meter = new Meter("pipe.Ingress.dark_meter", session, dev_tgt, bf_rt_info);
+    dark_global_meter = new Meter("pipe.Ingress.dark_global_meter", session, dev_tgt, bf_rt_info);
+
     vector<uint16_t> router_ports;
 
     cout<<"Setting mirroring\n";
@@ -228,6 +233,7 @@ void LocalClient::setup(){
     populate_monitored(monitored_prefixes);
     add_ports(ports);
     set_forward(port_pairs);
+    set_rates();
 }
 
 void LocalClient::run(){
@@ -284,7 +290,7 @@ void LocalClient::run(){
             }
         }
         cout << "Cur active addr: " << cur_active_addr_cnt << endl;
-        cout << "Active addr: " << active_addr_cnt << "out of" << addr_cnt << endl;
+        cout << "Active addr: " << active_addr_cnt << " out of " << addr_cnt << endl;
 
         auto stop = chrono::steady_clock::now();
         auto duration = chrono::duration_cast<chrono::microseconds>(stop - start);

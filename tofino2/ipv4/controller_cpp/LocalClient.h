@@ -34,7 +34,7 @@
 #include "MirrorManager.h"
 
 #define NUM_PIPES 2
-#define RECIRCULATE_PORT 68
+#define RECIRCULATE_PORT 6
 
 using namespace std;
 using namespace bfrt;
@@ -49,8 +49,8 @@ struct Args {
     uint32_t avg_byte_rate = 17758683;
     uint16_t alpha = 216;
     string monitored_path = "monitored.txt";
-    vector<uint16_t> outgoing = {1};
-    vector<uint16_t> incoming = {2};
+    vector<uint16_t> outgoing = {8};
+    vector<uint16_t> incoming = {9};
 };
 
 class LocalClient{
@@ -83,8 +83,8 @@ class LocalClient{
         PortsTable *ports_table;
         MonitoredTable *monitored_table;
         ForwardTable *forward_table;
-        Register *global_table;
-        Register *flag_table;
+        vector<Register *> global_tables;
+        vector<Register *> flag_tables;
         Meter *dark_meter;
         Meter *dark_global_meter;
     public:

@@ -54,7 +54,7 @@ void generate_IPv6_addresses(const string& prefix, int length){
     
     for (uint64_t i = 0; i < total_pfxes; i++) {
         memcpy(addr, base_addr, 16);
-        uint64_t tmp_i = i << 2;
+        uint64_t tmp_i = i << 3;
         for (int j = 6; j >= 0; --j) {
             addr[j] += tmp_i & 0xFF;
             tmp_i >>= 8;
@@ -275,7 +275,7 @@ void LocalClient::setup(){
     vector<uint16_t> router_ports;
 
     cout<<"Setting mirroring\n";
-    add_mirroring(router_ports, 1, 2, 71, 24);
+    add_mirroring(router_ports, 1, 2, 73, 16);
     cout<<"Done with mirroring setup\n";
     monitored_prefixes = parse_monitored(monitored_path);
     cout << "Populating monitored IPv6\n";
@@ -295,7 +295,7 @@ void LocalClient::run(){
         uint32_t cur_active_addr_cnt = 0;
         uint32_t active_addr_cnt = 0;
         uint32_t inactive_addr = 0;
-        unordered_map<string, uint32_t> inactive_pfxs;
+        unordered_map<uint32_t, uint32_t> inactive_pfxs;
         
         for (int x = 0; x < 8; x++){
             unique_lock<mutex> flag_lock = flag_tables[x]->start_sync();
@@ -318,6 +318,7 @@ void LocalClient::run(){
                     }
                     flag_indices.push_back(i);
                     counters[actual_idx] = alpha + 1;
+                    active_addr_cnt++;
                 }
                 else {
                     if(counters[actual_idx] > 1){
@@ -352,7 +353,7 @@ void LocalClient::run(){
         }
 
         cout << "Cur active addr: " << cur_active_addr_cnt << endl;
-        cout << "Active addr: " << active_addr_cnt << "out of" << addr_cnt << endl;
+        cout << "Active addr: " << active_addr_cnt << " out of " << addr_cnt << endl;
 
         update_rates(inactive_pfxs, inactive_addr);
 

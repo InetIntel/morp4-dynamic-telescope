@@ -148,7 +148,7 @@ class LocalClient:
             netws = list(ipnet.subnets(new_prefix=56))
             self.index_prefix_mapping.extend(netws)
 
-            base_idx += len(netws)
+            base_idx += mask + 1
             self.addr_cnt += len(netws)
 
     def add_mirroring(self, eg_ports, mc_session_id, log_session_id):
@@ -271,7 +271,7 @@ class LocalClient:
                 loc_time = time.monotonic() 
                 
                 logging.info(f'Reading flag table {t}')
-                flags = self.read_register(self.flag_tables[t], range(self.addr_cnt / 4))
+                flags = self.read_register(self.flag_tables[t], range(self.addr_cnt // 4))
                 logging.info(f'Reading flag table {t} took {time.monotonic()  - loc_time}')
 
                 global_indices = []

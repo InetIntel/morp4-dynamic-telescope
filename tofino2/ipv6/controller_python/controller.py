@@ -49,7 +49,7 @@ sys.path.append(SDE_PYTHON3)
 sys.path.append(os.path.join(SDE_PYTHON3, 'tofino'))
 sys.path.append(os.path.join(SDE_PYTHON3, 'tofino', 'bfrt_grpc'))
 
-LOG_PORT = 6
+LOG_PORT = 16
 # LOG_PORT = 140 # 2
 RECIRCULATE_PORT = 6
 NUM_PIPES = 2
@@ -126,7 +126,7 @@ class LocalClient:
         self.dark_meter = self.bfrt_info.table_get('pipe.Ingress.dark_meter')
         self.dark_global_meter = self.bfrt_info.table_get('pipe.Ingress.dark_global_meter')
         self.interface.bind_pipeline_config(self.bfrt_info.p4_name_get())
-        self.add_mirroring([5, 5, 6], 1, 2)  # set up mirroring
+        self.add_mirroring([14, 14, 15], 1, 2)  # set up mirroring
         monitored_prefixes = self.parse_monitored(self.monitored_path)   # populate monitored table
         self.populate_monitored(monitored_prefixes)
         self.add_ports(self.ports)
@@ -230,7 +230,7 @@ class LocalClient:
                 dark_netw = str(dark_netws[i])
                 self.dark_prefix_index_mapping[dark_netw] = dark_base_idx + i
 
-            base_idx += len(netws) / 8
+            base_idx += int(len(netws) / 8)
             dark_base_idx += len(dark_netws)
             self.addr_cnt += len(netws)
 
@@ -302,7 +302,7 @@ class LocalClient:
             gc.DataTuple('$mcast_grp_a_valid', bool_val=True),
             gc.DataTuple('$mcast_grp_b', 2),
             gc.DataTuple('$mcast_grp_b_valid', bool_val=True),
-            gc.DataTuple('$max_pkt_len', 39)
+            gc.DataTuple('$max_pkt_len', 73)
         ], "$normal")
 
         try:
@@ -357,7 +357,7 @@ class LocalClient:
                 
                 loc_time = time.monotonic() 
                 logging.info(f'Reading flag table {t}')
-                flags = self.read_register(self.flag_tables[t], range(self.addr_cnt / 8))
+                flags = self.read_register(self.flag_tables[t], range(int(self.addr_cnt / 8)))
                 logging.info(f'Reading flag table {t} took {time.monotonic()  - loc_time}')
 
                 global_indices = []
@@ -420,8 +420,8 @@ if __name__ == "__main__":
     parser.add_argument('--avg-packet-rate', default=343933, type=int, help='Avg packet rate')
     parser.add_argument('--alpha', default=216, type=int, help='Alpha value')
     parser.add_argument('--monitored', default='../input_files/monitored.txt', type=str)
-    parser.add_argument('--outgoing', nargs='*', default=[1], type=int)
-    parser.add_argument('--incoming', nargs='*', default=[2], type=int)
+    parser.add_argument('--outgoing', nargs='*', default=[8], type=int)
+    parser.add_argument('--incoming', nargs='*', default=[9], type=int)
 
     args = parser.parse_args()
 
