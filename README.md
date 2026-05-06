@@ -6,3 +6,19 @@ To overcome these issues, we propose MORP4, a programmable data plane framework 
 
 
 You can find our paper [here](https://www.usenix.org/conference/nsdi26/presentation/xygkou). The presentation will be added soon!
+
+Please use the following if you would like to cite our paper!
+```
+@inproceedings {316740,
+author = {Iliana Xygkou and Jithin K. Sojan and Dhruv Rauthan and Feng Zhu and Thomas Holterbach and Shane Alcock and Brian Flanagan and Ahmed Saeed and Alberto Dainotti},
+title = {{MORP4}: A Dynamic Network Telescope},
+booktitle = {23rd USENIX Symposium on Networked Systems Design and Implementation (NSDI 26)},
+year = {2026},
+isbn = {978-1-939133-54-0},
+address = {Renton, WA},
+pages = {915--932},
+url = {https://www.usenix.org/conference/nsdi26/presentation/xygkou},
+publisher = {USENIX Association},
+month = may
+}
+```
